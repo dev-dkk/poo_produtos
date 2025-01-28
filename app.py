@@ -1,9 +1,9 @@
 #Importacao de bibliotecas
 
-from flet import Page, TextField, ElevatedButton, DataTable, DataRow, DataColumn, DataCell, Text, icons, IconButton
+from flet import Page, ProgressBar,TextField,Container, Row, ElevatedButton, DataTable, DataRow, DataColumn, DataCell, Text, icons, IconButton, Column as Diabo,alignment
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import sessionmaker, declarative_base
-import os as pegafdp
+import time
 
 #Configuracao do Banco de dados
 
@@ -63,10 +63,10 @@ class App(ProdutoDB):
         self.db = ProdutoDB()
         
         #Organizacao das entradas e dados dentro do app(os inputs)
-        self.nome_ipt = TextField(label='Nome do Produto')
-        self.preco_entrada_ipt = TextField(label='Preço de Entrada do Produto', keyboard_type='number')
-        self.taxa_aumento_ipt = TextField(label='Taxa para Preço Saída(%)', keyboard_type='number')
-        self.quantidade_ipt = TextField(label='Quantidade', keyboard_type='number')
+        self.nome_ipt = TextField(label='Nome do Produto', width=800)
+        self.preco_entrada_ipt = TextField(label='Preço de Entrada do Produto', keyboard_type='number', width=800)
+        self.taxa_aumento_ipt = TextField(label='Taxa para Preço Saída(%)', keyboard_type='number', width=800)
+        self.quantidade_ipt = TextField(label='Quantidade', keyboard_type='number', width=800)
         #Organizazcao as informacoes dentro do app
         self.table = DataTable(
             columns=[
@@ -77,7 +77,8 @@ class App(ProdutoDB):
                 DataColumn(Text("TAXA")),
                 DataColumn(Text("QUANTIDADE")),
                 DataColumn(Text("AÇÕES"))
-            ]
+            ],
+            
         )
         self.page.add(
             self.nome_ipt,
@@ -131,11 +132,38 @@ class App(ProdutoDB):
 
 #Execucao do app
 def main(page:Page):
+
+    #Titulo da janela
     page.title = "DK - Gerenciamento Produtos"
+
+    #Para impedir que alterem o tamanho da janela e definir tamamnho da janela
+    page.window.resizable = False
     page.window.width = 800
+    
+    #Variaveis de iniciação para adicionar uma barra de progresso enquanto a janela carrega
+    barra = ProgressBar(width = 200)
+    texto = Text("Carregando ...")
+    gambiarra1 = Diabo([barra, texto], alignment="center", horizontal_alignment="center") #Cria uma coluna com a barra e o texto
+    gambiarra2 = Container(content=gambiarra1, alignment=alignment.center, expand=True)#Encapsula em um container que alinha ao centro
+    page.add(gambiarra2)
+
+    #Fazer com que a barra de progresso avance de acordo com o tempo de carregamento definido
+    for i in range(10):
+        barra.value = (i+1)*10
+        page.update()
+        time.sleep(0.3)
+
+    #Deixa a janela visivel apos acabar o tempo
+    page.window.visible = True
+
+    #Adciona um icone a janela  ///////SÓ FUNCIONA NO WINDOWS
     page.window.icon = "img/logo.ico"
+
+    #Limpa a barra de progresso apos o carregamento
+    page.clean()
+
     App(page)
 
 if __name__ == "__main__":
     import flet as funciona
-    funciona.app(target=main)
+    funciona.app(target=main, view=funciona.AppView.FLET_APP_HIDDEN)
