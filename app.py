@@ -20,3 +20,18 @@ class Produto(Base):
     taxa_aumento = Column(Float, nullable=False)
     quantidade = Column(Integer, nullable=False)
 
+#Classe gerenciamento banco de dados
+
+class ProdutoDB:
+    def __init__(self):
+        self.engine = create_engine('sqlite:///produto.db')
+        Base.metadata.create_all(self.engine)
+        self.Session = sessionmaker(bind=self.engine)
+    
+    def adc_produto(self, nome, preco_entrada, preco_saida, taxa_aumento, quantidade):
+        session = self.Session()
+        produto = Produto(nome = nome, preco_entrada = preco_entrada, preco_saida = preco_saida, taxa_aumento = taxa_aumento, quantidade =
+                          quantidade)
+        session.add(produto)
+        session.commit()
+        session.close()
