@@ -130,3 +130,12 @@ class App(ProdutoDB):
     def deletar(self, produto_id):
         self.db.dele(produto_id)
         self.atualizar_tabela()
+
+#Execucao do app
+def main(page:Page):
+    page.title = "DK - Gerenciamento Produtos"
+    App(page)
+
+if __name__ == "__main__":
+    import flet as funciona
+    funciona.app(target=main)
