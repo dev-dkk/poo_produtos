@@ -3,6 +3,7 @@
 from flet import Page, TextField, ElevatedButton, DataTable, DataRow, DataColumn, DataCell, Text, icons, IconButton
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import sessionmaker, declarative_base
+import os as pegafdp
 
 #Configuracao do Banco de dados
 
@@ -132,6 +133,7 @@ class App(ProdutoDB):
 def main(page:Page):
     page.title = "DK - Gerenciamento Produtos"
     page.window.width = 800
+    page.window.icon = "img/logo.ico"
     App(page)
 
 if __name__ == "__main__":
