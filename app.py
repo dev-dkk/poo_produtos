@@ -66,7 +66,6 @@ class App(ProdutoDB):
         self.preco_entrada_ipt = TextField(label='Preco de Entrada do Produto', keyboard_type='number')
         self.taxa_aumento_ipt = TextField(label='Taca de Aumento no Preco para saida do Produto(%)', keyboard_type='number')
         self.quantidade_ipt = TextField(label='Quantidade', keyboard_type='number')
-        self.preco_saida_ipt = ((self.preco_entrada_ipt*(self.taxa_aumento_ipt/100))+self.preco_entrada_ipt)
         #Organizazcao as informacoes dentro do app
         self.table = DataTable(
             columns=[
@@ -82,22 +81,20 @@ class App(ProdutoDB):
         self.page.add(
             self.nome_ipt,
             self.preco_entrada_ipt,
-            self.preco_saida_ipt,
             self.taxa_aumento_ipt,
             self.quantidade_ipt,
-            ElevatedButton("+", on_click=self.adc),
+            ElevatedButton("+", on_click=self.adc_produto),
             self.table
         )
         self.atualizar_tabela()
 
-    #Adicionar produto
+    #Chama metodo adicionar produto do banco e dados 
     def adc_produto(self, e):
         nome = self.nome_ipt.value
-        preco_entrada = self.preco_entrada_ipt
-        preco_saida = self.preco_saida_ipt
-        taxa_aumento = self.taxa_aumento_ipt
-        quantidade = self.quantidade_ipt
-
+        preco_entrada = float(self.preco_entrada_ipt.value)  
+        taxa_aumento = float(self.taxa_aumento_ipt.value)    
+        preco_saida = preco_entrada * (taxa_aumento / 100) + preco_entrada
+        quantidade = int(self.quantidade_ipt.value)          
         self.db.adc(nome, preco_entrada, preco_saida, taxa_aumento, quantidade)
         self.atualizar_tabela()
 
@@ -118,7 +115,7 @@ class App(ProdutoDB):
                         DataCell(
                             IconButton(
                                 icon=icons.DELETE,
-                                on_click=lambda e, id = produto.id: self.dele(id)
+                                on_click=lambda e, id = produto.id: self.deletar(id)
                             )
                         )
                     ]
@@ -126,7 +123,7 @@ class App(ProdutoDB):
             )
         self.page.update()
     
-    #Metodo para deletar
+    #Metodo para chamar o metodo eletar do banco de dados quando clicar o botao excluir
     def deletar(self, produto_id):
         self.db.dele(produto_id)
         self.atualizar_tabela()
@@ -134,6 +131,7 @@ class App(ProdutoDB):
 #Execucao do app
 def main(page:Page):
     page.title = "DK - Gerenciamento Produtos"
+    page.window.width = 800
     App(page)
 
 if __name__ == "__main__":
