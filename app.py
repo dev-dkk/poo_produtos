@@ -63,19 +63,19 @@ class App(ProdutoDB):
         
         #Organizacao das entradas e dados dentro do app(os inputs)
         self.nome_ipt = TextField(label='Nome do Produto')
-        self.preco_entrada_ipt = TextField(label='Preco de Entrada do Produto', keyboard_type='number')
-        self.taxa_aumento_ipt = TextField(label='Taca de Aumento no Preco para saida do Produto(%)', keyboard_type='number')
+        self.preco_entrada_ipt = TextField(label='Preço de Entrada do Produto', keyboard_type='number')
+        self.taxa_aumento_ipt = TextField(label='Taxa para Preço Saída(%)', keyboard_type='number')
         self.quantidade_ipt = TextField(label='Quantidade', keyboard_type='number')
         #Organizazcao as informacoes dentro do app
         self.table = DataTable(
             columns=[
                 DataColumn(Text("ID")),
                 DataColumn(Text("NOME")),
-                DataColumn(Text("PRECO ENTRADA")),
-                DataColumn(Text("PRECO SAIDA")),
+                DataColumn(Text("PREÇO ENTRADA")),
+                DataColumn(Text("PREÇO SAÍDA")),
                 DataColumn(Text("TAXA")),
                 DataColumn(Text("QUANTIDADE")),
-                DataColumn(Text("ACOES"))
+                DataColumn(Text("AÇÕES"))
             ]
         )
         self.page.add(
