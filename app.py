@@ -53,5 +53,80 @@ class ProdutoDB:
             session.delete(produto)
             session.commit()
         session.close()
+
+#Classe Principal da Interface e Logica do App
+class App(ProdutoDB):
+    #Metodo Construtor da classe principal
+    def __init__(self, page:Page):
+        self.page = page
+        self.db = ProdutoDB()
+        
+        #Organizacao das entradas e dados dentro do app(os inputs)
+        self.nome_ipt = TextField(label='Nome do Produto')
+        self.preco_entrada_ipt = TextField(label='Preco de Entrada do Produto', keyboard_type='number')
+        self.taxa_aumento_ipt = TextField(label='Taca de Aumento no Preco para saida do Produto(%)', keyboard_type='number')
+        self.quantidade_ipt = TextField(label='Quantidade', keyboard_type='number')
+        self.preco_saida_ipt = ((self.preco_entrada_ipt*(self.taxa_aumento_ipt/100))+self.preco_entrada_ipt)
+        #Organizazcao as informacoes dentro do app
+        self.table = DataTable(
+            columns=[
+                DataColumn(Text("ID")),
+                DataColumn(Text("NOME")),
+                DataColumn(Text("PRECO ENTRADA")),
+                DataColumn(Text("PRECO SAIDA")),
+                DataColumn(Text("TAXA")),
+                DataColumn(Text("QUANTIDADE")),
+                DataColumn(Text("ACOES"))
+            ]
+        )
+        self.page.add(
+            self.nome_ipt,
+            self.preco_entrada_ipt,
+            self.preco_saida_ipt,
+            self.taxa_aumento_ipt,
+            self.quantidade_ipt,
+            ElevatedButton("+", on_click=self.adc),
+            self.table
+        )
+        self.atualizar_tabela()
+
+    #Adicionar produto
+    def adc_produto(self, e):
+        nome = self.nome_ipt.value
+        preco_entrada = self.preco_entrada_ipt
+        preco_saida = self.preco_saida_ipt
+        taxa_aumento = self.taxa_aumento_ipt
+        quantidade = self.quantidade_ipt
+
+        self.db.adc(nome, preco_entrada, preco_saida, taxa_aumento, quantidade)
+        self.atualizar_tabela()
+
+    #Metodo para atualizazr a tabela
+    def atualizar_tabela(self):
+        self.table.rows.clear()
+        produtos = self.db.lst()
+        for produto in produtos:
+            self.table.rows.append(
+                DataRow(
+                    cells=[
+                        DataCell(Text(str(produto.id))),
+                        DataCell(Text(produto.nome)),
+                        DataCell(Text(f"R${produto.preco_entrada:.2f}")),
+                        DataCell(Text(f"R${produto.preco_saida:.2f}")),
+                        DataCell(Text(f"{produto.taxa_aumento}%")),
+                        DataCell(Text(str(produto.quantidade))),
+                        DataCell(
+                            IconButton(
+                                icon=icons.DELETE,
+                                on_click=lambda e, id = produto.id: self.dele(id)
+                            )
+                        )
+                    ]
+                )
+            )
+        self.page.update()
     
-    
+    #Metodo para deletar
+    def deletar(self, produto_id):
+        self.db.dele(produto_id)
+        self.atualizar_tabela()
