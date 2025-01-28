@@ -53,5 +53,5 @@ class ProdutoDB:
             session.delete(produto)
             session.commit()
         session.close()
-
+    
     
