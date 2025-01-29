@@ -139,7 +139,7 @@ def main(page:Page):
     #Para impedir que alterem o tamanho da janela e definir tamamnho da janela
     page.window.resizable = False
     page.window.width = 800
-    
+
     #Variaveis de iniciação para adicionar uma barra de progresso enquanto a janela carrega
     barra = ProgressBar(width = 200)
     texto = Text("Carregando ...")
@@ -151,7 +151,7 @@ def main(page:Page):
     for i in range(10):
         barra.value = (i+1)*10
         page.update()
-        time.sleep(0.3)
+        time.sleep(0.5)
 
     #Deixa a janela visivel apos acabar o tempo
     page.window.visible = True
