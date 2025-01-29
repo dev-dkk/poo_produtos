@@ -139,6 +139,10 @@ def main(page:Page):
     #Para impedir que alterem o tamanho da janela e definir tamamnho da janela
     page.window.resizable = False
     page.window.width = 800
+    page.window.height = 1200
+    #page.vertical_alignment = funciona.MainAxisAlignment.CENTER
+    page.horizontal_alignment = funciona.CrossAxisAlignment.CENTER
+    page.padding = 5
 
     #Variaveis de iniciação para adicionar uma barra de progresso enquanto a janela carrega
     barra = ProgressBar(width = 200)
