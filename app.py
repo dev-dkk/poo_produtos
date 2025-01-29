@@ -1,6 +1,6 @@
 #Importacao de bibliotecas
 
-from flet import Page, ProgressBar,TextField,Container, Row, ElevatedButton, DataTable, DataRow, DataColumn, DataCell, Text, icons, IconButton, Column as Diabo,alignment
+from flet import Page, ProgressBar,TextField,Container, Row, ElevatedButton, DataTable, DataRow, DataColumn, DataCell, Text, Icons, IconButton, Column as Diabo,alignment
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import sessionmaker, declarative_base
 import time
@@ -116,7 +116,7 @@ class App(ProdutoDB):
                         DataCell(Text(str(produto.quantidade))),
                         DataCell(
                             IconButton(
-                                icon=icons.DELETE,
+                                icon=Icons.DELETE,
                                 on_click=lambda e, id = produto.id: self.deletar(id)
                             )
                         )
