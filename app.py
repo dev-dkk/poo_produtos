@@ -1,4 +1,4 @@
-#Importacao de bibliotecas
+#Importacão de bibliotecas
 
 from flet import Page, ProgressBar,TextField,Container, Row, ElevatedButton, DataTable, DataRow, DataColumn, DataCell, Text, Icons, IconButton, Column as Diabo,alignment
 from sqlalchemy import create_engine, Column, Integer, String, Float
