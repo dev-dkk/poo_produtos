@@ -161,7 +161,7 @@ def main(page:Page):
     page.window.visible = True
 
     #Adciona um icone a janela  ///////SÓ FUNCIONA NO WINDOWS
-    page.window.icon = "img/logo.ico"
+    #page.window.icon = "img/logo.ico"  //Vou eixar comentado pois estou enviando apenas o arquivo app.py
 
     #Limpa a barra de progresso apos o carregamento
     page.clean()
